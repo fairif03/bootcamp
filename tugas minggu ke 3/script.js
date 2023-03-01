@@ -1,29 +1,31 @@
-$.ajax({
-  url: "http://www.omdbapi.com/?apikey=60751f75&s=fast%20and%20furious",
-  success: (results) => {
-    const movies = results.Search;
-    let cards = "";
-    console.log(movies);
-    movies.forEach((m) => {
-      cards += showCards(m);
-    });
-    $(".movies-container").html(cards);
-    $(".modal-detail-button").on("click", function () {
-      $.ajax({
-        url: "http://www.omdbapi.com/?apikey=60751f75&i=" + $(this).data("imdbid"),
-        success: (m) => {
-          const movieDetail = showMovieDetail(m);
-          $(".modal-body").html(movieDetail);
-        },
-        error: (e) => {
-          console.log(e.responseText);
-        },
+$(".search-button").on("click", function () {
+  $.ajax({
+    url: "http://www.omdbapi.com/?apikey=60751f75&s=" + $(".input-keyword").val(),
+    success: (results) => {
+      const movies = results.Search;
+      let cards = "";
+      console.log(movies);
+      movies.forEach((m) => {
+        cards += showCards(m);
       });
-    });
-  },
-  error: (e) => {
-    console.log(e.responseText);
-  },
+      $(".movies-container").html(cards);
+      $(".modal-detail-button").on("click", function () {
+        $.ajax({
+          url: "http://www.omdbapi.com/?apikey=60751f75&i=" + $(this).data("imdbid"),
+          success: (m) => {
+            const movieDetail = showMovieDetail(m);
+            $(".modal-body").html(movieDetail);
+          },
+          error: (e) => {
+            console.log(e.responseText);
+          },
+        });
+      });
+    },
+    error: (e) => {
+      console.log(e.responseText);
+    },
+  });
 });
 
 function showCards(m) {
