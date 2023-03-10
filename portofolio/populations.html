@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Populations</title>
+  </head>
+  <body>
+    <center>
+      <canvas id="myChart" style="width: 100%; max-width: 700px"></canvas>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+      <script>
+        const population =
+          "https://datausa.io/api/data?drilldowns=Nation&measures=Population";
+        fetch(population)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            var xValues = [];
+            var yValues = [];
+            var barColors = ["red", "green", "blue", "orange", "brown"];
+            data.data.forEach((element) => {
+              xValues.push(element["ID Year"]);
+              yValues.push(element["Population"]);
+            });
+            console.log(yValues);
+            new Chart("myChart", {
+              type: "bar",
+              data: {
+                labels: xValues,
+                datasets: [
+                  {
+                    backgroundColor: barColors,
+                    data: yValues,
+                  },
+                ],
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: `Data population of ${data.data[0]["Nation"]}`,
+                },
+                lagend: {
+                  display: false,
+                },
+              },
+            });
+          });
+      </script>
+    </center>
+  </body>
+</html>
